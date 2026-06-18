@@ -84,35 +84,104 @@ export default function ChatBox({
       <div className="messages-container">
         {messages.length === 0 ? (
           <div className="welcome-overlay">
-            <div className="welcome-icon-glow">
-              <Sparkles size={38} />
+            {/* Floating particles background */}
+            <div className="welcome-particles">
+              <div className="particle p1"></div>
+              <div className="particle p2"></div>
+              <div className="particle p3"></div>
+              <div className="particle p4"></div>
+              <div className="particle p5"></div>
             </div>
-            <h1 className="welcome-title">NeuralLens AI</h1>
-            <p className="welcome-desc">
-              Upload multiple PDF documents and converse with them. Extract exact page references, ask complex conceptual questions, or summarize files in seconds.
-            </p>
-            
+
+            {/* Animated Logo */}
+            <div className="welcome-hero-logo">
+              <div className="hero-ring ring-outer"></div>
+              <div className="hero-ring ring-inner"></div>
+              <Sparkles size={32} />
+            </div>
+
+            {/* Gradient animated title */}
+            <h1 className="welcome-title-animated">NeuralLens AI</h1>
+            <p className="welcome-tagline">Your intelligent document companion — powered by RAG</p>
+
+            {/* Feature Highlights */}
+            <div className="feature-highlights">
+              <div className="feature-chip">
+                <span className="feature-chip-icon">🔍</span>
+                <span>Semantic Search</span>
+              </div>
+              <div className="feature-chip">
+                <span className="feature-chip-icon">📄</span>
+                <span>PDF Analysis</span>
+              </div>
+              <div className="feature-chip">
+                <span className="feature-chip-icon">🧠</span>
+                <span>AI-Powered</span>
+              </div>
+              <div className="feature-chip">
+                <span className="feature-chip-icon">📌</span>
+                <span>Page Citations</span>
+              </div>
+            </div>
+
+            {/* How it works - Step Cards */}
             <div className="welcome-steps">
-              <div className="welcome-step-card">
+              <div className="welcome-step-card" style={{"--delay": "0s"}}>
+                <div className="step-icon-wrap"><span className="step-emoji">📤</span></div>
                 <div className="step-card-num">Step 1</div>
                 <div className="step-card-title">Upload PDFs</div>
-                <div className="step-card-desc">Drag your files into the sidebar. They will be parsed by PyMuPDF automatically.</div>
+                <div className="step-card-desc">Drag files into the sidebar. PyMuPDF parses every page automatically.</div>
               </div>
-              <div className="welcome-step-card">
+              <div className="welcome-step-card" style={{"--delay": "0.1s"}}>
+                <div className="step-icon-wrap"><span className="step-emoji">⚡</span></div>
                 <div className="step-card-num">Step 2</div>
                 <div className="step-card-title">Vector Indexing</div>
-                <div className="step-card-desc">LangChain splits and indexes your texts into Pinecone vector storage.</div>
+                <div className="step-card-desc">LangChain chunks your text and indexes it in Pinecone vector storage.</div>
               </div>
-              <div className="welcome-step-card">
+              <div className="welcome-step-card" style={{"--delay": "0.2s"}}>
+                <div className="step-icon-wrap"><span className="step-emoji">🎯</span></div>
                 <div className="step-card-num">Step 3</div>
                 <div className="step-card-title">Select Scope</div>
-                <div className="step-card-desc">Select a specific file to focus your questions, or search across your entire vault.</div>
+                <div className="step-card-desc">Focus on a single PDF or search across your entire document vault.</div>
               </div>
-              <div className="welcome-step-card">
+              <div className="welcome-step-card" style={{"--delay": "0.3s"}}>
+                <div className="step-icon-wrap"><span className="step-emoji">💬</span></div>
                 <div className="step-card-num">Step 4</div>
                 <div className="step-card-title">Chat & Retrieve</div>
-                <div className="step-card-desc">Ask queries and see instant, citation-mapped summaries with page citations.</div>
+                <div className="step-card-desc">Ask questions and get instant answers with source & page citations.</div>
               </div>
+            </div>
+
+            {/* Quick Start Prompts */}
+            <div className="quick-prompts-section">
+              <p className="quick-prompts-label">⚡ Try a quick prompt</p>
+              <div className="quick-prompts">
+                <button className="quick-prompt-chip" onClick={() => { sendMessage("Summarize the key points of this document"); }}>
+                  <ArrowRight size={12} />
+                  Summarize key points
+                </button>
+                <button className="quick-prompt-chip" onClick={() => { sendMessage("What are the main skills and qualifications mentioned?"); }}>
+                  <ArrowRight size={12} />
+                  Skills & qualifications
+                </button>
+                <button className="quick-prompt-chip" onClick={() => { sendMessage("List all important dates and events mentioned in this document"); }}>
+                  <ArrowRight size={12} />
+                  Find dates & events
+                </button>
+              </div>
+            </div>
+
+            {/* Tech Stack Badge */}
+            <div className="tech-stack-bar">
+              <span className="tech-badge">LangChain</span>
+              <span className="tech-dot">•</span>
+              <span className="tech-badge">Pinecone</span>
+              <span className="tech-dot">•</span>
+              <span className="tech-badge">Groq LLM</span>
+              <span className="tech-dot">•</span>
+              <span className="tech-badge">FastAPI</span>
+              <span className="tech-dot">•</span>
+              <span className="tech-badge">React</span>
             </div>
           </div>
         ) : (
