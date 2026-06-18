@@ -1,0 +1,29 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Project-specific
+backend/data/pdfs/
+backend/pinecone_service.py # if there are secrets not meant to be shared
+node-portable/
+
+# Mac/Windows
+.DS_Store
+Thumbs.db
