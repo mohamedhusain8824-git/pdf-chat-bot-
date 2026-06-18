@@ -19,7 +19,7 @@ export default function Login({ login, error }) {
           <div className="logo-icon">
             <Sparkles size={24} />
           </div>
-          <span className="logo-title">DocuQuest AI</span>
+          <span className="logo-title">NeuralLens AI</span>
         </div>
         
         <p className="subtitle">

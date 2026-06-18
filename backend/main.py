@@ -1,5 +1,5 @@
 """
-DocuQuest AI — FastAPI Application Entry Point.
+NeuralLens AI — FastAPI Application Entry Point.
 
 Configures:
   • Logging
@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
     """Run setup tasks on startup and cleanup on shutdown."""
     # ── Startup ──────────────────────────────────────────────────────
     logger.info("=" * 60)
-    logger.info("  DocuQuest AI Backend — Starting up")
+    logger.info("  NeuralLens AI Backend — Starting up")
     logger.info("=" * 60)
 
     # Ensure the PDF upload directory exists
@@ -59,12 +59,12 @@ async def lifespan(app: FastAPI):
     yield  # ← App runs here
 
     # ── Shutdown ─────────────────────────────────────────────────────
-    logger.info("DocuQuest AI Backend — Shutting down.")
+    logger.info("NeuralLens AI Backend — Shutting down.")
 
 
 # ── FastAPI app ──────────────────────────────────────────────────────
 app = FastAPI(
-    title="DocuQuest AI",
+    title="NeuralLens AI",
     description="AI-powered PDF document chatbot with RAG",
     version="1.0.0",
     lifespan=lifespan,
@@ -96,6 +96,6 @@ def health_check():
     """Basic health check endpoint."""
     return {
         "status": "running",
-        "service": "DocuQuest AI Backend",
+        "service": "NeuralLens AI Backend",
         "version": "1.0.0",
     }

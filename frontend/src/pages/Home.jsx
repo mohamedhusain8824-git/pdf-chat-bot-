@@ -18,6 +18,7 @@ export default function Home({ chatState }) {
         currentSessionId={chatState.currentSessionId}
         loadSession={chatState.loadSession}
         clearChat={chatState.clearChat}
+        sendMessage={chatState.sendMessage}
       />
       <ChatBox 
         messages={chatState.messages}

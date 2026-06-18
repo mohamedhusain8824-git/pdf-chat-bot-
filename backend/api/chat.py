@@ -43,6 +43,7 @@ class ChatResponse(BaseModel):
     answer: str
     session_id: str
     history: list
+    sources: Optional[list] = None
 
 @router.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest):
@@ -56,7 +57,7 @@ def chat(request: ChatRequest):
         # Pass history to ask_question so it remembers context
         current_history = sessions[session_id]
         
-        answer = ask_question(request.question, history=current_history, filename=request.filename)
+        answer, sources = ask_question(request.question, history=current_history, filename=request.filename)
 
         # Save user message
         sessions[session_id].append(
@@ -71,6 +72,7 @@ def chat(request: ChatRequest):
             {
                 "role": "assistant",
                 "content": answer,
+                "sources": sources
             }
         )
 
@@ -84,6 +86,7 @@ def chat(request: ChatRequest):
             answer=answer,
             session_id=session_id,
             history=sessions[session_id],
+            sources=sources
         )
 
     except Exception as e:

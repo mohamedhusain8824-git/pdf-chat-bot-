@@ -15,7 +15,7 @@ from services.llm_service import get_llm
 logger = logging.getLogger(__name__)
 
 # ── System prompt template ───────────────────────────────────────────
-SYSTEM_PROMPT = """You are DocuQuest AI, an intelligent document assistant.
+SYSTEM_PROMPT = """You are NeuralLens AI, an intelligent document assistant.
 
 STRICT RULES:
 1. Answer the user's question using ONLY the provided context below.
@@ -30,7 +30,9 @@ CONTEXT:
 {context}"""
 
 
-def ask_question(question: str, history: Optional[List[Dict[str, str]]] = None, filename: Optional[str] = None) -> str:
+from typing import List, Dict, Optional, Tuple
+
+def ask_question(question: str, history: Optional[List[Dict[str, str]]] = None, filename: Optional[str] = None) -> Tuple[str, List[Dict]]:
     """
     Run the full RAG pipeline: retrieve → build prompt → invoke LLM.
 
@@ -40,7 +42,7 @@ def ask_question(question: str, history: Optional[List[Dict[str, str]]] = None, 
         filename: Optional filename to filter chunks by a specific PDF.
 
     Returns:
-        The LLM's answer as a string.
+        A tuple of (answer_string, list_of_sources).
     """
     if history is None:
         history = []
@@ -52,14 +54,22 @@ def ask_question(question: str, history: Optional[List[Dict[str, str]]] = None, 
         logger.warning("No documents retrieved for: '%s'", question[:80])
         return (
             "I don't have enough information in the uploaded documents "
-            "to answer that. Please upload a relevant PDF first."
+            "to answer that. Please upload a relevant PDF first.",
+            []
         )
 
     # 2. Build context from retrieved chunks
     context_parts = []
+    sources = []
     for doc in docs:
         source = doc.metadata.get("source", "Unknown")
         page = doc.metadata.get("page", "?")
+        
+        # Keep track of unique sources for the frontend
+        source_entry = {"source": source, "page": page}
+        if source_entry not in sources:
+            sources.append(source_entry)
+            
         context_parts.append(
             f"[Source: {source}, Page {page}]\n{doc.page_content}"
         )
@@ -88,7 +98,7 @@ def ask_question(question: str, history: Optional[List[Dict[str, str]]] = None, 
         llm = get_llm()
         response = llm.invoke(messages)
         logger.info("LLM answered question: '%s'", question[:80])
-        return response.content
+        return response.content, sources
     except Exception as e:
         logger.error("LLM invocation failed: %s", e)
         raise

@@ -1,8 +1,9 @@
-import React from "react";
-import { FileText } from "lucide-react";
+import React, { useState } from "react";
+import { FileText, Volume2, Square } from "lucide-react";
 
 export default function Message({ message }) {
   const isUser = message.role === "user";
+  const [isPlaying, setIsPlaying] = useState(false);
   
   // A simple markdown processor for rendering lists, headers, and code snippets in the chat bubble
   const renderContent = (content) => {
@@ -71,6 +72,20 @@ export default function Message({ message }) {
     return parts.length > 0 ? parts : text;
   };
 
+  const toggleSpeech = () => {
+    if (isPlaying) {
+      window.speechSynthesis.cancel();
+      setIsPlaying(false);
+      return;
+    }
+    
+    const utterance = new SpeechSynthesisUtterance(message.content);
+    utterance.onend = () => setIsPlaying(false);
+    utterance.onerror = () => setIsPlaying(false);
+    window.speechSynthesis.speak(utterance);
+    setIsPlaying(true);
+  };
+
   return (
     <div className={`message-row ${isUser ? "user" : "ai"}`}>
       <div className={`message-bubble-avatar ${isUser ? "user" : "ai"}`}>
@@ -83,16 +98,26 @@ export default function Message({ message }) {
         
         {/* Sources block */}
         {!isUser && message.sources && message.sources.length > 0 && (
-          <div className="citations-container">
+          <div className="citations-container" style={{ marginTop: "1rem", display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
             {message.sources.map((src, i) => (
-              <span key={i} className="citation-pill" title={src.filename}>
+              <span key={i} className="citation-pill" title={src.source} style={{ display: "inline-flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", background: "var(--bg-secondary)", padding: "2px 8px", borderRadius: "12px", border: "1px solid var(--border-color)" }}>
                 <FileText size={11} className="citation-icon" />
-                <span>{src.filename} (Pg {src.page})</span>
+                <span>{src.source} (Pg {src.page})</span>
               </span>
             ))}
           </div>
         )}
       </div>
+      {!isUser && (
+        <button 
+          onClick={toggleSpeech} 
+          className="tts-btn" 
+          title={isPlaying ? "Stop reading" : "Read aloud"}
+          style={{ background: "transparent", border: "none", color: "var(--text-muted)", cursor: "pointer", alignSelf: "flex-end", marginBottom: "8px", marginLeft: "8px" }}
+        >
+          {isPlaying ? <Square size={16} /> : <Volume2 size={16} />}
+        </button>
+      )}
     </div>
   );
 }

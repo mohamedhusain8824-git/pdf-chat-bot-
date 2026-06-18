@@ -1,1 +1,1 @@
-# API route handlers for the DocuQuest AI backend.
+# API route handlers for the NeuralLens AI backend.

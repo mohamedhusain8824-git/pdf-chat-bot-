@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Send, Sparkles, Trash2, ArrowRight, BookOpen, Search } from "lucide-react";
+import { Send, Sparkles, Trash2, ArrowRight, BookOpen, Search, Download } from "lucide-react";
 import Message from "./Message";
 
 export default function ChatBox({ 
@@ -29,6 +29,20 @@ export default function ChatBox({
     setInput("");
   };
 
+  const handleExport = () => {
+    let md = "# Chat Export\n\n";
+    messages.forEach(msg => {
+      md += `**${msg.role === "user" ? "You" : "AI"}**:\n${msg.content}\n\n`;
+    });
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "chat-export.md";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="chat-area">
       {/* Header bar */}
@@ -55,9 +69,14 @@ export default function ChatBox({
         </div>
         
         {messages.length > 0 && (
-          <button className="doc-delete-btn" onClick={clearChat} title="Clear Conversation" style={{ padding: "0.5rem" }}>
-            <Trash2 size={16} />
-          </button>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button className="doc-delete-btn" onClick={handleExport} title="Download Chat" style={{ padding: "0.5rem" }}>
+              <Download size={16} />
+            </button>
+            <button className="doc-delete-btn" onClick={clearChat} title="Clear Conversation" style={{ padding: "0.5rem" }}>
+              <Trash2 size={16} />
+            </button>
+          </div>
         )}
       </header>
 
@@ -68,7 +87,7 @@ export default function ChatBox({
             <div className="welcome-icon-glow">
               <Sparkles size={38} />
             </div>
-            <h1 className="welcome-title">DocuQuest AI</h1>
+            <h1 className="welcome-title">NeuralLens AI</h1>
             <p className="welcome-desc">
               Upload multiple PDF documents and converse with them. Extract exact page references, ask complex conceptual questions, or summarize files in seconds.
             </p>

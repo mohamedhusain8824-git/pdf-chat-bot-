@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { UploadCloud, FileText, Trash2, LogOut, FilePlus2, CheckCircle2, MessageSquare, Plus } from "lucide-react";
+import { UploadCloud, FileText, Trash2, LogOut, FilePlus2, CheckCircle2, MessageSquare, Plus, AlignLeft } from "lucide-react";
 
 export default function Sidebar({ 
   user, 
@@ -13,7 +13,8 @@ export default function Sidebar({
   sessions = [],
   currentSessionId,
   loadSession,
-  clearChat
+  clearChat,
+  sendMessage
 }) {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
@@ -71,7 +72,7 @@ export default function Sidebar({
           <div className="sidebar-logo-icon">
             <FileText size={18} />
           </div>
-          <span className="sidebar-logo-text">DocuQuest</span>
+          <span className="sidebar-logo-text">NeuralLens</span>
         </div>
       </div>
 
@@ -148,18 +149,33 @@ export default function Sidebar({
                       </span>
                     </div>
                   </div>
-                  <button 
-                    className="doc-delete-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (confirm(`Remove "${file.filename}"? This deletes the file and clears all vectors.`)) {
-                        deleteFile(file.filename);
-                      }
-                    }}
-                    title="Delete PDF and vectors"
-                  >
-                    <Trash2 size={14} />
-                  </button>
+                  <div style={{ display: "flex", gap: "4px" }}>
+                    <button 
+                      className="doc-delete-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedFile(file);
+                        setTimeout(() => {
+                          sendMessage("Please provide a comprehensive summary of this entire document, capturing the main purpose, key topics, and major conclusions. Structure it with clear headings and bullet points.");
+                        }, 50);
+                      }}
+                      title="Summarize document"
+                    >
+                      <AlignLeft size={14} />
+                    </button>
+                    <button 
+                      className="doc-delete-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (confirm(`Remove "${file.filename}"? This deletes the file and clears all vectors.`)) {
+                          deleteFile(file.filename);
+                        }
+                      }}
+                      title="Delete PDF and vectors"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
                 </div>
               );
             })}
