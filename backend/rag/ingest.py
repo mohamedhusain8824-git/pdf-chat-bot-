@@ -90,7 +90,7 @@ def delete_pdf_vectors(filename: str) -> None:
     index = pc.Index(index_name)
 
     try:
-        index.delete(filter={"source": filename})
+        index.delete(filter={"source": {"$eq": filename}})
         logger.info("Deleted vectors for '%s' from Pinecone.", filename)
     except Exception as e:
         logger.error("Error deleting vectors for '%s': %s", filename, e)

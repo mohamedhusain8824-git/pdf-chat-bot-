@@ -145,7 +145,7 @@ export default function Sidebar({
                     <div className="doc-details">
                       <span className="doc-name" title={file.filename}>{file.filename}</span>
                       <span className="doc-meta">
-                        {file.pages} pages • {formatBytes(file.size_bytes)}
+                        {file.pages ? `${file.pages} pages • ` : ""}{formatBytes(file.size_mb ? file.size_mb * 1024 * 1024 : 0)}
                       </span>
                     </div>
                   </div>

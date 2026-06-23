@@ -11,7 +11,9 @@ export default function App() {
     return (
       <Login 
         login={chatState.login} 
+        register={chatState.register}
         error={chatState.error} 
+        setError={chatState.setError}
       />
     );
   }

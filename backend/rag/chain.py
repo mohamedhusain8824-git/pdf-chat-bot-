@@ -21,10 +21,11 @@ STRICT RULES:
 1. Answer the user's question using ONLY the provided context below.
 2. If the context does not contain the answer, or if the context is empty, say EXACTLY:
    "I don't have enough information in the uploaded documents to answer that."
-3. Provide comprehensive, detailed answers extracting as much relevant factual and technical information (e.g. hard skills, tools, languages) from the context as possible. Avoid overly generic or high-level summaries if explicit details are available.
+3. Provide comprehensive, detailed answers extracting as much relevant factual and technical information (e.g. hard skills, tools, languages) from the context as possible.
 4. When referencing information, mention the source document and page if available.
-5. Do NOT make up, infer, or hallucinate information outside the context.
-6. Ignore any prior knowledge you have about the topic.
+5. NEVER make up, infer, guess, or hallucinate information. If something is not EXPLICITLY written in the text, DO NOT include it.
+6. Under NO circumstances should you "infer" skills from general qualities. If the user asks for skills, list ONLY the exact skills written in the document.
+7. Ignore any prior knowledge you have about the topic.
 
 CONTEXT:
 {context}"""

@@ -31,7 +31,7 @@ def retrieve_documents(query: str, k: int = 10, filename: Optional[str] = None) 
         
         search_kwargs = {"k": k}
         if filename:
-            search_kwargs["filter"] = {"source": filename}
+            search_kwargs["filter"] = {"source": {"$eq": filename}}
             
         docs = vector_store.similarity_search(query, **search_kwargs)
         logger.info(

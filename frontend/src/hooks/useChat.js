@@ -19,21 +19,46 @@ export default function useChat() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Authenticate user (mock)
-  const login = useCallback((email, password) => {
+  // Authenticate user via backend
+  const login = useCallback(async (email, password) => {
     setError(null);
     if (!email || !password) {
       setError("Please fill in all fields");
       return false;
     }
-    const mockUser = {
-      email,
-      name: email.split("@")[0],
-      tier: "Pro Plan"
-    };
-    setUser(mockUser);
-    localStorage.setItem("saas_user", JSON.stringify(mockUser));
-    return true;
+    try {
+      const response = await api.post("/auth/login", { email, password });
+      const userData = response.data.user;
+      setUser(userData);
+      localStorage.setItem("saas_user", JSON.stringify(userData));
+      return true;
+    } catch (err) {
+      console.error("Login error:", err);
+      const detail = err.response?.data?.detail || "Authentication failed. Is the backend running?";
+      setError(detail);
+      return false;
+    }
+  }, []);
+
+  // Register user via backend
+  const register = useCallback(async (name, email, password) => {
+    setError(null);
+    if (!name || !email || !password) {
+      setError("Please fill in all fields");
+      return false;
+    }
+    try {
+      const response = await api.post("/auth/register", { name, email, password });
+      const userData = response.data.user;
+      setUser(userData);
+      localStorage.setItem("saas_user", JSON.stringify(userData));
+      return true;
+    } catch (err) {
+      console.error("Registration error:", err);
+      const detail = err.response?.data?.detail || "Registration failed. Is the backend running?";
+      setError(detail);
+      return false;
+    }
   }, []);
 
   // Logout
@@ -207,6 +232,7 @@ export default function useChat() {
   return {
     user,
     login,
+    register,
     logout,
     files,
     selectedFile,

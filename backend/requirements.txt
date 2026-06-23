@@ -19,4 +19,10 @@ langchain-openai>=0.1.0
 
 # ── Vector Database ──────────────────────────────────────────────────
 langchain-pinecone>=0.1.0
-pinecone-client>=3.0.0
+pinecone>=5.0.0
+
+# ── Database (In-Memory MongoDB) ─────────────────────────────────────
+pymongo>=4.0.0
+mongomock>=4.0.0
+email-validator>=2.0.0
+
